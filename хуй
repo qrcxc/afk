@@ -1,0 +1,64 @@
+import xml.etree.ElementTree as ET
+
+# Функція для створення базової draw.io діаграми Use Case
+def create_drawio_use_case():
+    diagram = ET.Element('mxfile', host='app.diagrams.net')
+    diagram_child = ET.SubElement(diagram, 'diagram', name='Use Case Diagram')
+    root = ET.Element('mxGraphModel', dx="1420", dy="794", grid="1", gridSize="10", guides="1",
+                      tooltips="1", connect="1", arrows="1", fold="1", page="1", pageScale="1",
+                      pageWidth="827", pageHeight="1169", math="0", shadow="0")
+    root_cell = ET.SubElement(root, 'root')
+    ET.SubElement(root_cell, 'mxCell', id="0")
+    ET.SubElement(root_cell, 'mxCell', id="1", parent="0")
+
+    def add_actor(id, label, x, y):
+        cell = ET.SubElement(root_cell, 'mxCell', id=id, value=label, style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;", vertex="1", parent="1")
+        ET.SubElement(cell, 'mxGeometry', x=str(x), y=str(y), width="30", height="60", as_="geometry")
+
+    def add_use_case(id, label, x, y):
+        cell = ET.SubElement(root_cell, 'mxCell', id=id, value=label, style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;", vertex="1", parent="1")
+        ET.SubElement(cell, 'mxGeometry', x=str(x), y=str(y), width="120", height="60", as_="geometry")
+
+    def add_edge(id, source, target):
+        cell = ET.SubElement(root_cell, 'mxCell', id=id, style="endArrow=none;", edge="1", parent="1", source=source, target=target)
+        ET.SubElement(cell, 'mxGeometry', relative="1", as_="geometry")
+
+    # Actors
+    add_actor("2", "Користувач", 20, 100)
+    add_actor("3", "Оператор", 20, 250)
+    add_actor("4", "Адміністратор", 20, 400)
+
+    # Use cases
+    uc_ids = []
+    uc_map = {
+        "5": ("Зареєструватися", 200, 40),
+        "6": ("Увійти до системи", 200, 100),
+        "7": ("Створити відправку", 200, 160),
+        "8": ("Отримати трек-номер", 200, 220),
+        "9": ("Відстежити посилку", 200, 280),
+        "10": ("Отримати повідомлення", 200, 340),
+        "11": ("Оновити статус", 450, 160),
+        "12": ("Шукати посилку", 450, 220),
+        "13": ("Внести інформацію", 450, 280),
+        "14": ("Керування акаунтами", 700, 100),
+        "15": ("Перевірка логів", 700, 160),
+        "16": ("Контроль змін", 700, 220)
+    }
+
+    for id, (label, x, y) in uc_map.items():
+        add_use_case(id, label, x, y)
+        uc_ids.append(id)
+
+    # Edges
+    edges = [
+        ("e1", "2", "5"), ("e2", "2", "6"), ("e3", "2", "7"), ("e4", "2", "8"), ("e5", "2", "9"), ("e6", "2", "10"),
+        ("e7", "3", "6"), ("e8", "3", "11"), ("e9", "3", "12"), ("e10", "3", "13"),
+        ("e11", "4", "6"), ("e12", "4", "14"), ("e13", "4", "15"), ("e14", "4", "16")
+    ]
+    for id, source, target in edges:
+        add_edge(id, source, target)
+
+    diagram_child.text = ET.tostring(root, encoding="unicode")
+    return ET.tostring(diagram, encoding="unicode")
+
+drawio_xml = create_drawio_use_case()
