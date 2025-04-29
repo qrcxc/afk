@@ -1,0 +1,41 @@
+@startuml
+title Use Case: Сервіс відстеження посилок
+
+actor "Користувач" as User
+actor "Оператор служби доставки" as Operator
+actor "Адміністратор" as Admin
+
+rectangle "Система відстеження посилок" {
+  usecase "Зареєструватися" as UC1
+  usecase "Увійти до системи" as UC2
+  usecase "Створити нову відправку" as UC3
+  usecase "Отримати трек-номер" as UC4
+  usecase "Відстежити посилку" as UC5
+  usecase "Отримати повідомлення\nпро зміну статусу" as UC6
+
+  usecase "Оновити статус посилки" as UC7
+  usecase "Шукати посилку" as UC8
+  usecase "Внести нову інформацію" as UC9
+
+  usecase "Керування обліковими записами" as UC10
+  usecase "Перевірка логів" as UC11
+  usecase "Контроль змін статусів" as UC12
+}
+
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+User --> UC6
+
+Operator --> UC2
+Operator --> UC7
+Operator --> UC8
+Operator --> UC9
+
+Admin --> UC2
+Admin --> UC10
+Admin --> UC11
+Admin --> UC12
+@enduml
